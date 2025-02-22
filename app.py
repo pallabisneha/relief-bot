@@ -2,8 +2,9 @@ import streamlit as st
 import google.generativeai as genai
 
 # Configure Gemini API
-genai.configure(api_key="YOUR_GEMINI_API_KEY")
+import google.generativeai as genai
 
+genai.configure(api_key="AIzaSyC1GPKSHn6zLvGBZReodBAZwufQ2aGGlXs")
 def get_gemini_response(prompt):
     model = genai.GenerativeModel("gemini-pro")
     response = model.generate_content(prompt)

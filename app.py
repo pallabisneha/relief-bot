@@ -1,21 +1,24 @@
-from flask import Flask, request, jsonify
+import streamlit as st
 import google.generativeai as genai
 
-app = Flask(__name__)
-
-# Initialize Gemini API
+# Configure Gemini API
 genai.configure(api_key="YOUR_GEMINI_API_KEY")
 
-@app.route("/chat", methods=["POST"])
-def chat():
-    user_input = request.json.get("message")
-    if not user_input:
-        return jsonify({"error": "Message is required"}), 400
-
+def get_gemini_response(prompt):
     model = genai.GenerativeModel("gemini-pro")
-    response = model.generate_content(user_input)
+    response = model.generate_content(prompt)
+    return response.text
 
-    return jsonify({"response": response.text})
+# Streamlit UI
+st.title("🤖 Gemini Chatbot")
+st.write("Powered by Google's Gemini API")
 
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+# User input
+user_input = st.text_input("You:", "")
+
+if st.button("Ask"):
+    if user_input:
+        response = get_gemini_response(user_input)
+        st.write("💬 Chatbot:", response)
+    else:
+        st.warning("Please enter a message!")
